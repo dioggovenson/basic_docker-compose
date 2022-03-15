@@ -1,0 +1,30 @@
+version: '3.8'
+volumes:
+  data:
+services:
+  db:
+    container_name: db
+    image: mysql:8.0
+    ports:
+      - '3306:3306'
+    volumes:
+      - data:/var/lib/mysql
+    networks:
+      - backend
+    environment:
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=laravel
+      - MYSQL_ROOT_PASSWORD=laravel
+      - MYSQL_DATABASE=app_development
+  app:
+    container_name: app
+    image: richarvey/nginx-php-fpm:latest
+    ports:
+      - '8080:80'
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
